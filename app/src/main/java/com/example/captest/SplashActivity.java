@@ -6,6 +6,7 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/* 앱을 클릭할때 로고 띄우는 소스코드 */
 
 public class SplashActivity extends AppCompatActivity {
     @Override

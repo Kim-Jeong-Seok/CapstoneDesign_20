@@ -1,3 +1,5 @@
+/* MainActivity.java 소스코드와  MainActivity.xml은 이제 사용 X*/
+
 package com.example.captest;
 
 import android.app.Activity;

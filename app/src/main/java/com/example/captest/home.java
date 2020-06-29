@@ -54,6 +54,7 @@ public class home extends AppCompatActivity {
     Button btn_blind_off;
     Switch switch_auto;
     Switch switch_outdoor;
+    ImageButton ImgBtnAlarm;
 
     Set<BluetoothDevice> mDevices;
     InputStream mInputStream = null;
@@ -98,6 +99,8 @@ public class home extends AppCompatActivity {
         }
     }
 
+
+    /* 공공데이터를 이용해 미세먼지 xml 파싱후 표시하는 부분 */
     String getXmlData() {
         StringBuffer buffer = new StringBuffer();
         String queryUrl = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=서석동&dataTerm=month&pageNo=1&numOfRows=1&ServiceKey=" + key + "&ver=1.3";
@@ -163,6 +166,8 @@ public class home extends AppCompatActivity {
         super.onDestroy();
     }
 
+
+    /* 버튼에 대한 함수 설정 및 행동 */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +177,7 @@ public class home extends AppCompatActivity {
         this.btn_window_close = (Button) findViewById(R.id.btn_window_close);
         this.btn_blind_on = (Button) findViewById(R.id.btn_blind_on);
         this.btn_blind_off = (Button) findViewById(R.id.btn_blind_off);
+        this.ImgBtnAlarm= (ImageButton) findViewById(R.id.ImgBtnAlarm);
 
         //타이머 초기 설정
         tt = timerTaskMaker();
@@ -244,8 +250,11 @@ public class home extends AppCompatActivity {
 
     }
 
-    //일정 주기로 데이터 전송하는 TimerTask,
-    //TimerTask 재생성 메소드
+
+    // 자동모드 설정에 관련된 부분
+
+    // 일정 주기로 데이터 전송하는 TimerTask,
+    // TimerTask 재생성 메소드
     public TimerTask timerTaskMaker() {
         TimerTask tempTask = new TimerTask() {
             @Override
@@ -266,6 +275,8 @@ public class home extends AppCompatActivity {
         return null;
     }
 
+    // 블루투스 데이터 전송중 오류가 났을때 처리하는 함수
+
     public void sendData(String msg) {
         try {
             this.mOutputStream.write((String.valueOf(msg) + this.mStrDelimiter).getBytes());
@@ -274,6 +285,8 @@ public class home extends AppCompatActivity {
             finish();
         }
     }
+
+    // 안드로이드 블루투스 통신에 필요한 UUID 처리 함수
 
     public void connectToSelectedDevice(String selectedDeviceName) {
         this.mRemoteDevice = getDeviceFromBondedList(selectedDeviceName);
@@ -287,6 +300,8 @@ public class home extends AppCompatActivity {
             finish();
         }
     }
+
+    // 페어링된 장치가 없을때, 페어링된 장치가 없다고 토스트메시지 보내고, 디바이스 리스트 띄우기
 
     public void selectDevice() {
         this.mDevices = this.mBluetoothAdapter.getBondedDevices();
@@ -316,6 +331,8 @@ public class home extends AppCompatActivity {
         builder.setCancelable(false);
         builder.create().show();
     }
+
+    // 디바이스가 블루투스를 지원하지 않을때, 토스트 메시지를 띄우고, 앱 종료하는 함수
 
     public void checkBluetooth() {
         this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
